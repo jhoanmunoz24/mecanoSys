@@ -1,9 +1,10 @@
 
 import './App.css';
-import {Routes, Route,  } from 'react-router-dom';
+import {Routes, Route} from 'react-router-dom';
 
 import Register from './register';
 import LoginForm from './login';
+import AdminPanel from './adminPanel';
 function App() {
   return (
     
@@ -14,6 +15,7 @@ function App() {
         ></Route>
         <Route path='/login' element={<LoginForm/>}></Route>
         <Route path='/' element ={<LoginForm/>}></Route>
+        <Route path='/adminPanel' element = {<AdminPanel/>}></Route>
       </Routes>
     
   );
