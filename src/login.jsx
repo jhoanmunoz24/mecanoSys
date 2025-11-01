@@ -1,7 +1,9 @@
 import React from 'react'
-
+import { useNavigate, Link } from 'react-router-dom'
 export default function LoginForm() {
+
   return (
+    
     <>
       <div className="min-h-screen flex items-center justify-center">
         <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
@@ -64,9 +66,9 @@ export default function LoginForm() {
           <div className="text-center">
             <p className="text-sm">
               ¿No tienes una cuenta?{" "}
-              <a href="#" className="text-cyan-600">
+              <Link to="/register" className="text-cyan-600" >
                 Regístrate ahora
-              </a>
+              </Link>
             </p>
           </div>
 
