@@ -1,0 +1,201 @@
+import React from 'react';
+import { Navigate, Link } from 'react-router-dom';
+import { useState } from 'react';
+import RolTable from './RolTable';
+import { Plus } from 'lucide-react';
+import CreateUser from './createUser';
+export default function AdminPanel({ activeTab, setActiveTab }) {
+
+  const [showPopUp, setShowPopUp] = useState(false)
+
+  const handleShowPopUp = () => {
+    setShowPopUp(true);
+  }
+  return (
+    <>
+      <div className='container mx-auto px-4 sm:px-8'>
+        <div className='py-8'>
+          <div className='flex gap-1'>
+            <button
+              className='text-sm  bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l'
+              onClick={() => setActiveTab('Usuarios')}
+            >
+              Usuarios
+            </button>
+            <button
+              className='text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r'
+              onClick={() => setActiveTab('Roles')}
+            >
+              Roles
+            </button>
+          </div>
+
+
+          {activeTab === 'Usuarios' ? (
+            <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
+              <div>
+                <h2 className='text-2xl font-semibold leading-tight mb-10'>
+                  Usuarios
+                </h2>
+              </div>
+              <div className='flex justify-start'>
+                <button className='mb-10 flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-400 to-cyan-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 hover:from-cyan-300 hover:to-cyan-600' onClick={handleShowPopUp}>
+                  <Plus size={18} />
+                  Agregar Usuario
+                </button>
+              </div>
+              <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
+                <table className='min-w-full leading-normal'>
+                  <thead>
+                    <tr>
+                      <th className='px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider'>
+                        User
+                      </th>
+                      <th className='px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider'>
+                        Rol
+                      </th>
+                      <th className='px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider'>
+                        Fecha de creación
+                      </th>
+                      <th className='px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider'>
+                        Estado
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <div className='flex items-center'>
+                          <div className='ml-3'>
+                            <p className='text-gray-900 whitespace-no-wrap'>
+                              example@correo.com
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <p className='text-gray-900 whitespace-no-wrap'>
+                          Admin
+                        </p>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <p className='text-gray-900 whitespace-no-wrap'>
+                          Jan 21, 2020
+                        </p>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <span className='relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight'>
+                          <span
+                            aria-hidden=''
+                            className='absolute inset-0 bg-green-200 opacity-50 rounded-full'
+                          />
+                          <span className='relative'>Activo</span>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <div className='flex items-center'>
+                          <div className='ml-3'>
+                            <p className='text-gray-900 whitespace-no-wrap'>
+                              example@correo.com
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <p className='text-gray-900 whitespace-no-wrap'>
+                          Tecnico
+                        </p>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <p className='text-gray-900 whitespace-no-wrap'>
+                          Jan 01, 2020
+                        </p>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <span className='relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight'>
+                          <span
+                            aria-hidden=''
+                            className='absolute inset-0 bg-green-200 opacity-50 rounded-full'
+                          />
+                          <span className='relative'>Activo</span>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <div className='flex items-center'>
+                          <div className='ml-3'>
+                            <p className='text-gray-900 whitespace-no-wrap'>
+                              example@correo.com
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <p className='text-gray-900 whitespace-no-wrap'>
+                          Tecnico
+                        </p>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <p className='text-gray-900 whitespace-no-wrap'>
+                          Jan 10, 2020
+                        </p>
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
+                        <span className='relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight'>
+                          <span
+                            aria-hidden=''
+                            className='absolute inset-0 bg-orange-200 opacity-50 rounded-full'
+                          />
+                          <span className='relative'>Suspendido</span>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className='px-5 py-5 bg-white text-sm'>
+                        <div className='flex items-center'>
+                          <div className='ml-3'>
+                            <p className='text-gray-900 whitespace-no-wrap'>
+                              example@correo.com
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className='px-5 py-5 bg-white text-sm'>
+                        <p className='text-gray-900 whitespace-no-wrap'>
+                          Admin
+                        </p>
+                      </td>
+                      <td className='px-5 py-5 bg-white text-sm'>
+                        <p className='text-gray-900 whitespace-no-wrap'>
+                          Jan 18, 2020
+                        </p>
+                      </td>
+                      <td className='px-5 py-5 bg-white text-sm'>
+                        <span className='relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight'>
+                          <span
+                            aria-hidden=''
+                            className='absolute inset-0 bg-red-200 opacity-50 rounded-full'
+                          />
+                          <span className='relative'>Bloqueado</span>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+               
+              </div>
+            </div>
+          ) : (
+            <RolTable />
+          )}
+        </div>
+
+      </div>
+
+      {showPopUp && <CreateUser setShowPopUp={setShowPopUp}/>}
+    </>
+  );
+}
