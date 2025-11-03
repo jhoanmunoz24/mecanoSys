@@ -36,7 +36,7 @@ export default function CreateUser({ setShowPopUp }) {
                         <input
                           type='text'
                           className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
-                          placeholder='Event title'
+                          placeholder='Pepito Perez'
                         />
                       </div>
                       <div className='flex flex-col'>
@@ -44,27 +44,37 @@ export default function CreateUser({ setShowPopUp }) {
                         <input
                           type='text'
                           className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
-                          placeholder='Optional'
+                          placeholder='ejemplo@correo.com'
                         />
                       </div>
 
                       <div className='flex flex-col'>
-                        <label className='leading-loose'>Correo</label>
+                        <label className='leading-loose'>Contraseña</label>
                         <input
-                          type='text'
+
+                          type='password'
                           className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
-                          placeholder='Optional'
+                          placeholder='********'
                         />
+                      </div>
+                      <div className='flex flex-col'>
+                      <label className='leading-loose'>Rol</label>
+                      <select className='group relative border border-gray-300 bg-white text-gray-500 text-lg px-3 py-1 rounded' placeholder='Escoger rol'>
+                        Escoger Rol
+                        <option >Administrador</option>
+                        <option>Tecnico</option>
+                      </select>
                       </div>
                       <div className='flex items-center space-x-4'>
                       
                         <div className='flex flex-col'>
-                          <label className='leading-loose'>Start</label>
+                          <label className='leading-loose'>Fecha de creación</label>
                           <div className='relative focus-within:text-gray-600 text-gray-400'>
                             <input
                               type='text'
                               className='pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
-                              placeholder='25/02/2020'
+                              placeholder='11/01/2025'
+                              disabled
                             />
                             <div className='absolute left-3 top-2'>
                               <svg
@@ -84,49 +94,15 @@ export default function CreateUser({ setShowPopUp }) {
                             </div>
                           </div>
                         </div>
-                        <div className='flex flex-col'>
                         
-                          <label className='leading-loose'>End</label>
-                          <div className='relative focus-within:text-gray-600 text-gray-400'>
-                            <input
-                              type='text'
-                              className='pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
-                              placeholder='26/02/2020'
-                            />
-                            <div className='absolute left-3 top-2'>
-                              <svg
-                                className='w-6 h-6'
-                                fill='none'
-                                stroke='currentColor'
-                                viewBox='0 0 24 24'
-                                xmlns='http://www.w3.org/2000/svg'
-                              >
-                                <path
-                                  strokeLinecap='round'
-                                  strokeLinejoin='round'
-                                  strokeWidth={2}
-                                  d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
-                                />
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
                       </div>
-                      <div className='flex flex-col'>
-                        <label className='leading-loose'>
-                          Event Description
-                        </label>
-                        <input
-                          type='text'
-                          className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
-                          placeholder='Optional'
-                        />
-                      </div>
+                      
                     </div>
                     <div className='pt-4 flex items-center space-x-4'>
                       <button
                         className='flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none'
                         onClick={() => setShowPopUp(false)}
+
                       >
                         <svg
                           className='w-6 h-6 mr-3'
@@ -142,10 +118,10 @@ export default function CreateUser({ setShowPopUp }) {
                             d='M6 18L18 6M6 6l12 12'
                           />
                         </svg>{' '}
-                        Cancel
+                        Cancelar
                       </button>
                       <button className='bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none'>
-                        Create
+                        Crear
                       </button>
                     </div>
                   

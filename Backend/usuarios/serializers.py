@@ -1,5 +1,5 @@
 from .models import Usuario
-
+from django.contrib.auth import authenticate
 from rest_framework import serializers
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -32,3 +32,16 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
         validated_data.pop("password2")
 
         return Usuario.objects.create_user(password=password, **validated_data)
+    
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    password = serializers.CharField(write_only =True)
+
+    def validate(self, data):
+        user = authenticate(**data)
+
+        if user is user.is_active:
+            return user
+        raise serializers.ValidationError("El usuario o la contraseña son incorrectos")

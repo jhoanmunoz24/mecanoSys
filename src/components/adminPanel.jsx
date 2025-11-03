@@ -2,14 +2,19 @@ import React from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import RolTable from './RolTable';
-import { Plus } from 'lucide-react';
+import { Plus, Pencil } from 'lucide-react';
 import CreateUser from './createUser';
+import EditUser from './editUser';
 export default function AdminPanel({ activeTab, setActiveTab }) {
 
   const [showPopUp, setShowPopUp] = useState(false)
+  const [showEditPop, setShowEditPop] = useState(false)
 
   const handleShowPopUp = () => {
     setShowPopUp(true);
+  }
+  const handleShowEditPop = () => {
+    setShowEditPop(true);
   }
   return (
     <>
@@ -60,6 +65,9 @@ export default function AdminPanel({ activeTab, setActiveTab }) {
                       <th className='px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider'>
                         Estado
                       </th>
+                      <th className='px-5 py-3 border-b-2 border-gray-200 bg-gray-100  text-xs font-semibold text-gray-600 uppercase tracking-wider'>
+                        Editar
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -91,6 +99,14 @@ export default function AdminPanel({ activeTab, setActiveTab }) {
                           />
                           <span className='relative'>Activo</span>
                         </span>
+                        
+                      </td>
+                      <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm '>
+                        <button className='text-gray-500 hover:bg-gray-100 p-2 rounded-full transition-colors cursor-pointer' onClick={() => {
+                          handleShowEditPop(true);
+                        }}>
+                          <Pencil size={16 }/>
+                        </button>
                       </td>
                     </tr>
                     <tr>
@@ -183,6 +199,7 @@ export default function AdminPanel({ activeTab, setActiveTab }) {
                         </span>
                       </td>
                     </tr>
+                    
                   </tbody>
                 </table>
                
@@ -196,6 +213,8 @@ export default function AdminPanel({ activeTab, setActiveTab }) {
       </div>
 
       {showPopUp && <CreateUser setShowPopUp={setShowPopUp}/>}
+      {showEditPop && <EditUser setShowEditPop={setShowEditPop}/>}
+
     </>
   );
 }

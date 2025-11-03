@@ -1,6 +1,26 @@
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
 export default function Register() {
+  const [formData, setFormData] = useState({
+    correo: '',
+    password1: '',
+    password2: '',
+  });
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSubmit = async (e) => {
+
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+    console.log(formData);
+  };
   return (
     <>
       <section className=''>
@@ -29,11 +49,13 @@ export default function Register() {
                   </label>
                   <input
                     type='email'
-                    name='email'
+                    name='correo'
                     id='email'
+                    value={formData.correo}
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 block w-full p-2.5 '
                     placeholder='nombre@correo.com'
                     required=''
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
@@ -45,11 +67,13 @@ export default function Register() {
                   </label>
                   <input
                     type='password'
-                    name='password'
+                    name='password1'
                     id='password'
+                    value={formData.password1}
                     placeholder='••••••••'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 block w-full p-2.5 '
                     required=''
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
@@ -61,23 +85,29 @@ export default function Register() {
                   </label>
                   <input
                     type='password'
-                    name='confirm-password'
+                    value={formData.password2}
+                    name='password2'
                     id='confirm-password'
                     placeholder='••••••••'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500  block w-full p-2.5 '
                     required=''
+                    onChange={handleChange}
                   />
                 </div>
 
                 <button
                   type='submit'
                   className='w-full text-black bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center'
+                  disabled={isLoading}
                 >
                   Crear una cuenta
                 </button>
                 <p className='text-sm font-light text-gray-500 dark:text-gray-400'>
                   ¿Ya tienes una cuenta?{' '}
-                  <Link to='/login'className='font-medium text-primary-600 hover:underline dark:text-primary-500'>
+                  <Link
+                    to='/login'
+                    className='font-medium text-primary-600 hover:underline dark:text-primary-500'
+                  >
                     Ingresa Aqui
                   </Link>
                 </p>
