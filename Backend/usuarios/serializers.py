@@ -32,6 +32,30 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = Usuario
         fields = ["id","nombreCompleto","correo","estado","fechaCreacion","ultimoAcesso"]
 
+    class UsuarioWriteSerializer(serializers.ModelSerializer):
+        rolIds = serializers.ListField(child=serializers.UUIDField(), required=False, write_only=True)
+    class Meta:
+        model = Usuario
+        fields = ["nombreCompleto","correo","estado","rolIds"]
+
+    def create(self, validated_data):
+        rol_ids = validated_data.pop("rolIds", [])
+        user = Usuario.objects.create(**validated_data)
+        if rol_ids:
+            from .models import Rol
+            roles = Rol.objects.filter(id__in=rol_ids)
+            user.roles.set(roles)
+        return user
+
+    def update(self, instance, validated_data):
+        rol_ids = validated_data.pop("rolIds", None)
+        user = super().update(instance, validated_data)
+        if rol_ids is not None:
+            from .models import Rol
+            roles = Rol.objects.filter(id__in=rol_ids)
+            user.roles.set(roles)
+        return user
+
 class CustomUserRegistrationSerializer(serializers.ModelSerializer):
     password1= serializers.CharField(write_only=True)
     password2= serializers.CharField(write_only=True)
