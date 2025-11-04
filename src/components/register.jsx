@@ -6,6 +6,7 @@ import axios from 'axios';
 export default function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    nombreCompleto: '',
     correo: '',
     password1: '',
     password2: '',
@@ -127,6 +128,22 @@ export default function Register() {
               >
                 <div>
                   <label
+                    htmlFor='mombreCompleto'
+                    className='block mb-2 text-sm font-medium text-gray-600 '
+                  >
+                    Nombre Completo
+                  </label>
+                  <input
+                    type='text'
+                    name='nombreCompleto'
+                    id='nombreCompleto'
+                    value={formData.nombreCompleto}
+                    className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 block w-full p-2.5 '
+                    placeholder='Pepito Perez'
+                    required
+                    onChange={handleChange}
+                  />
+                  <label
                     htmlFor='email'
                     className='block mb-2 text-sm font-medium text-gray-600 '
                   >
@@ -139,7 +156,7 @@ export default function Register() {
                     value={formData.correo}
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 block w-full p-2.5 '
                     placeholder='nombre@correo.com'
-                    required=''
+                    required
                     onChange={handleChange}
                   />
                 </div>
@@ -157,7 +174,7 @@ export default function Register() {
                     value={formData.password1}
                     placeholder='••••••••'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 block w-full p-2.5 '
-                    required=''
+                    required
                     onChange={handleChange}
                   />
                 </div>
@@ -175,7 +192,7 @@ export default function Register() {
                     id='confirm-password'
                     placeholder='••••••••'
                     className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500  block w-full p-2.5 '
-                    required=''
+                    required
                     onChange={handleChange}
                   />
                 </div>

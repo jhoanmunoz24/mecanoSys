@@ -1,9 +1,16 @@
 import React from 'react';
 import AdminPanel from './adminPanel';
 import { X } from 'lucide-react';
+import { useState } from 'react';
 
+export default function EditUser({ setShowEditPop,editingUser, setEditingUser}) {
 
-export default function EditUser({ setShowEditPop }) {
+  const [formData, setFormData] = useState({
+    nombre: editingUser?.nombreCompleto || '',
+    correo: editingUser?.correo || '',
+    rol: editingUser?.rol || 'Administrador',
+    password: ''
+  });
   return (
     <>
       <div className='fixed bg-black/50 min-h-screen z-10 w-screen flex justify-center items-center top-0 left-0'></div>
@@ -36,7 +43,9 @@ export default function EditUser({ setShowEditPop }) {
                     type='text'
                     className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
                     placeholder='Pepito Perez'
+                    defaultValue={formData.nombre}
                   />
+
                 </div>
                 <div className='flex flex-col'>
                   <label className='leading-loose'>Correo</label>
@@ -44,6 +53,7 @@ export default function EditUser({ setShowEditPop }) {
                     type='text'
                     className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
                     placeholder='ejemplo@correo.com'
+                    defaultValue={formData.correo}
                   />
                 </div>
 
@@ -53,6 +63,7 @@ export default function EditUser({ setShowEditPop }) {
                     type='password'
                     className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
                     placeholder='********'
+                   
                   />
                 </div>
                 <div className='flex flex-col'>
