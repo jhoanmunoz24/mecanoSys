@@ -59,8 +59,20 @@ class PermisoViewSet(viewsets.ModelViewSet):
     serializer_class = PermisoSerializer
 
 class UserView(viewsets.ModelViewSet):
-    serializer_class = CustomUserSerializer
     queryset = Usuario.objects.all()
+    serializer_class = CustomUserSerializer
+
+    @action(detail=True, methods=['post'])
+    def asignar_rol(self, request, pk=None):
+        rol_id = request.data.get('rol')
+        UsuarioRol.objects.get_or_create(usuario_id=pk, rol_id=rol_id)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True, methods=['delete'])
+    def retirar_rol(self, request, pk=None):
+        rol_id = request.data.get('rol')
+        UsuarioRol.objects.filter(usuario_id=pk, rol_id=rol_id).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 

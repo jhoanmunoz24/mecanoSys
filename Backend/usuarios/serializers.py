@@ -35,11 +35,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class CustomUserRegistrationSerializer(serializers.ModelSerializer):
     password1= serializers.CharField(write_only=True)
     password2= serializers.CharField(write_only=True)
+    
     class Meta:
 
 
         model = Usuario
-        fields = ["id","nombreCompleto","correo","password1","password2"]
+        fields = ["id","nombreCompleto","correo","rol","password1","password2"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def validate(self, attrs):
@@ -52,12 +53,23 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
     
 
     def create(self,validated_data):
+        rol_id = validated_data.pop("rol", None)
         correo =validated_data.get('correo')
         password = validated_data.pop("password1")
         validated_data.pop("password2")
 
-        return Usuario.objects.create_user(username=correo, password=password, **validated_data)
+
+        user = Usuario.objects.create_user(username=correo, password=password, **validated_data)
     
+        from .models import Rol, UsuarioRol
+        if rol_id:
+            rol = Rol.objects.get(id=rol_id)
+        else:
+            rol, _ = Rol.objects.get_or_create(nombre="Admin", defaults={"descripcion": "Rol por defecto Admin"})
+        UsuarioRol.objects.get_or_create(usuario=user, rol=rol)
+
+        return user
+        
 
 
 class LoginSerializer(serializers.Serializer):
