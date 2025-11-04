@@ -27,21 +27,36 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
     
 
     def create(self,validated_data):
-
+        correo =validated_data.get('correo')
         password = validated_data.pop("password1")
         validated_data.pop("password2")
 
-        return Usuario.objects.create_user(password=password, **validated_data)
+        return Usuario.objects.create_user(username=correo, password=password, **validated_data)
     
 
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.CharField()
+    correo = serializers.EmailField()
     password = serializers.CharField(write_only =True)
 
     def validate(self, data):
-        user = authenticate(**data)
+        correo = data.get('correo')
+        password = data.get('password')
 
-        if user is user.is_active:
-            return user
-        raise serializers.ValidationError("El usuario o la contraseña son incorrectos")
+
+        user = authenticate(
+            request= self.context.get('request'),
+            username=correo,
+            password=password
+        )
+        if user is None:
+            raise serializers.ValidationError(
+                "El usuario o la contraseña son incorrectos"
+            )
+        
+        if not user.is_active:
+            raise serializers.ValidationError(
+                "Esta cuenta está desactivada"
+            )
+        
+        return user

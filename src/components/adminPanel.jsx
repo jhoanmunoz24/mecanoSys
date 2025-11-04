@@ -1,21 +1,54 @@
 import React from 'react';
-import { Navigate, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import RolTable from './RolTable';
 import { Plus, Pencil } from 'lucide-react';
 import CreateUser from './createUser';
+import axios from 'axios';
 import EditUser from './editUser';
-export default function AdminPanel({ activeTab, setActiveTab }) {
+import App from '../App';
 
-  const [showPopUp, setShowPopUp] = useState(false)
-  const [showEditPop, setShowEditPop] = useState(false)
+export default function AdminPanel({ activeTab, setActiveTab, setIsLoggedIn}) {
+  const navigate = useNavigate();
+  const [showPopUp, setShowPopUp] = useState(false);
+  const [showEditPop, setShowEditPop] = useState(false);
+  
+  const [username, setUsername] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
+  
+  const handleLogout = async () => {
+    console.log("Cerrando sesion")
+    try{
+      const refreshToken = localStorage.getItem("refresh_token")
+      const accessToken = localStorage.getItem("access_token")
+      if(refreshToken){
+        await axios.post("http://127.0.0.1:8000/api/logout/", {refresh: refreshToken},{
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }})
+        
+          console.log("Token agregado a blacklist")
 
+      }
+
+    }
+    
+    catch(error){
+      console.error("Error al hacer logout:", error);
+    }
+    finally{
+        localStorage.removeItem("access_token")
+        localStorage.removeItem("refresh_token")
+        setIsLoggedIn(false)
+        navigate('/login')
+    }
+  }
   const handleShowPopUp = () => {
     setShowPopUp(true);
-  }
+  };
   const handleShowEditPop = () => {
     setShowEditPop(true);
-  }
+  };
   return (
     <>
       <div className='container mx-auto px-4 sm:px-8'>
@@ -34,7 +67,9 @@ export default function AdminPanel({ activeTab, setActiveTab }) {
               Roles
             </button>
           </div>
-
+          <div>
+            <button className='text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r' onClick={handleLogout}>Cerrar Sesion</button>
+          </div>
 
           {activeTab === 'Usuarios' ? (
             <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
@@ -44,7 +79,10 @@ export default function AdminPanel({ activeTab, setActiveTab }) {
                 </h2>
               </div>
               <div className='flex justify-start'>
-                <button className='mb-10 flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-400 to-cyan-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 hover:from-cyan-300 hover:to-cyan-600' onClick={handleShowPopUp}>
+                <button
+                  className='mb-10 flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-400 to-cyan-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 hover:from-cyan-300 hover:to-cyan-600'
+                  onClick={handleShowPopUp}
+                >
                   <Plus size={18} />
                   Agregar Usuario
                 </button>
@@ -99,13 +137,15 @@ export default function AdminPanel({ activeTab, setActiveTab }) {
                           />
                           <span className='relative'>Activo</span>
                         </span>
-                        
                       </td>
                       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm '>
-                        <button className='text-gray-500 hover:bg-gray-100 p-2 rounded-full transition-colors cursor-pointer' onClick={() => {
-                          handleShowEditPop(true);
-                        }}>
-                          <Pencil size={16 }/>
+                        <button
+                          className='text-gray-500 hover:bg-gray-100 p-2 rounded-full transition-colors cursor-pointer'
+                          onClick={() => {
+                            handleShowEditPop(true);
+                          }}
+                        >
+                          <Pencil size={16} />
                         </button>
                       </td>
                     </tr>
@@ -199,22 +239,18 @@ export default function AdminPanel({ activeTab, setActiveTab }) {
                         </span>
                       </td>
                     </tr>
-                    
                   </tbody>
                 </table>
-               
               </div>
             </div>
           ) : (
             <RolTable />
           )}
         </div>
-
       </div>
 
-      {showPopUp && <CreateUser setShowPopUp={setShowPopUp}/>}
-      {showEditPop && <EditUser setShowEditPop={setShowEditPop}/>}
-
+      {showPopUp && <CreateUser setShowPopUp={setShowPopUp} />}
+      {showEditPop && <EditUser setShowEditPop={setShowEditPop} />}
     </>
   );
 }
