@@ -46,7 +46,11 @@ class UserView(viewsets.ModelViewSet):
 
     queryset = Usuario.objects.all()
     
+    def get_serializer_class(self):
+        return UsuarioWriteSerializer if self.action in ["create","update","partial_update"] else CustomUserSerializer
 
+    def perform_update(self, serializer):
+        user = serializer.save()
 
     def get_serializer_class(self):
         return UsuarioWriteSerializer if self.action in ['create','update','partial_update'] else CustomUserSerializer

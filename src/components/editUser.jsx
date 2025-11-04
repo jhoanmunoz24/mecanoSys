@@ -1,16 +1,52 @@
 import React from 'react';
 import AdminPanel from './adminPanel';
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import axios from 'axios';
 
-export default function EditUser({ setShowEditPop,editingUser, setEditingUser}) {
+export default function EditUser({
+  setShowEditPop,
+  editingUser,
+  setEditingUser,
+  updateUser,
+  userId,
+}) {
+
+  const [roles, setRoles] = useState([]);
 
   const [formData, setFormData] = useState({
-    nombre: editingUser?.nombreCompleto || '',
-    correo: editingUser?.correo || '',
-    rol: editingUser?.rol || 'Administrador',
-    password: ''
+    nombreCompleto: editingUser?.nombreCompleto ?? '',
+    correo: editingUser?.correo ?? '',
+    rolId: editingUser?.roles?.[0]?.id ?? '', // ajusta según tu modelo
+    password: '',
   });
+  async function handleEditUser() {
+    if (!userId) return; // evita PATCH /null/
+    const payload = {
+      nombreCompleto: formData.nombreCompleto,
+      correo: formData.correo,
+      ...(formData.password ? { password: formData.password } : {}),
+      ...(formData.rolId ? { rolIds: [formData.rolId] } : {}),
+    };
+    await updateUser(userId, payload);
+    setShowEditPop(false);
+  }
+
+  useEffect(() => {
+    const fetchRoles = async () => {
+      const token = localStorage.getItem('access_token');
+      const response = await axios.get('http://127.0.0.1:8000/api/roles/', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setRoles(response.data);
+    };
+    fetchRoles();
+  }, []);
+
+  function onChange(e) {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }
   return (
     <>
       <div className='fixed bg-black/50 min-h-screen z-10 w-screen flex justify-center items-center top-0 left-0'></div>
@@ -43,9 +79,10 @@ export default function EditUser({ setShowEditPop,editingUser, setEditingUser}) 
                     type='text'
                     className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
                     placeholder='Pepito Perez'
-                    defaultValue={formData.nombre}
+                    name='nombreCompleto'
+                    value={formData.nombreCompleto}
+                    onChange={onChange}
                   />
-
                 </div>
                 <div className='flex flex-col'>
                   <label className='leading-loose'>Correo</label>
@@ -53,7 +90,9 @@ export default function EditUser({ setShowEditPop,editingUser, setEditingUser}) 
                     type='text'
                     className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
                     placeholder='ejemplo@correo.com'
-                    defaultValue={formData.correo}
+                    onChange={onChange}
+                    name='correo'
+                    value={formData.correo}
                   />
                 </div>
 
@@ -61,9 +100,11 @@ export default function EditUser({ setShowEditPop,editingUser, setEditingUser}) 
                   <label className='leading-loose'>Contraseña</label>
                   <input
                     type='password'
+                    name='password'
                     className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
                     placeholder='********'
-                   
+                    value={formData.password}
+                    onChange={onChange}
                   />
                 </div>
                 <div className='flex flex-col'>
@@ -71,10 +112,19 @@ export default function EditUser({ setShowEditPop,editingUser, setEditingUser}) 
                   <select
                     className='group relative border border-gray-300 bg-white text-gray-500 text-lg px-3 py-1 rounded'
                     placeholder='Escoger rol'
+                    value={formData.rolId}
+                    onChange={onChange}
+                    name='rolId'
                   >
                     Escoger Rol
-                    <option>Administrador</option>
-                    <option>Tecnico</option>
+                    {roles.map((rol) => (
+                      <option
+                        key={rol.id}
+                        value={rol.id}
+                      >
+                        {rol.nombre}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className='flex items-center space-x-4'>
@@ -128,7 +178,10 @@ export default function EditUser({ setShowEditPop,editingUser, setEditingUser}) 
                   </svg>{' '}
                   Cancelar
                 </button>
-                <button className='bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none'>
+                <button
+                  className='bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none'
+                  onClick={handleEditUser}
+                >
                   Guardar
                 </button>
               </div>

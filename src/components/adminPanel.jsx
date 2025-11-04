@@ -23,6 +23,15 @@ export default function AdminPanel({
   const [editingUser, setEditingUser] = useState(null);
   const [userId, setUserId] = useState(null);
 
+
+  async function updateUser(id, payload) {
+  const token = localStorage.getItem("access_token");
+  return axios.patch(
+    `http://127.0.0.1:8000/api/usuarios/${id}/`,
+    payload,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+}
   const getUsers = async () => {
     try {
       const token = localStorage.getItem('access_token');
@@ -215,6 +224,7 @@ export default function AdminPanel({
                             onClick={() => {
                               handleShowEditPop(true);
                               setEditingUser(user);
+                              setUserId(user.id);
                             }}
                           >
                             <Pencil size={16} />
@@ -257,6 +267,9 @@ export default function AdminPanel({
           setShowEditPop={setShowEditPop}
           user={users}
           setUser={setUsers}
+          userId={userId}
+          updateUser={updateUser}
+
         />
       )}
       {showDeleteUser && (

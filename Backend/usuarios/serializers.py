@@ -55,6 +55,27 @@ class UsuarioWriteSerializer(serializers.ModelSerializer):
             admin, _ = Rol.objects.get_or_create(nombre="Admin", defaults={"descripcion":"Admin por defecto"})
             user.roles.add(admin)
         return user
+    
+    def update(self, instance, validated):
+        rol_ids = validated.pop("rolIds", None)
+        pwd = validated.pop("password", None)
+
+        for attr, val in validated.items():
+            setattr(instance, attr, val)
+
+        if pwd:
+            instance.set_password(pwd)
+
+        instance.save()
+        if rol_ids is not None:
+            roles = Rol.objects.filter(id__in=rol_ids)
+            instance.roles.set(roles)
+            if roles.filter(nombre__iexact="admin").exists():
+                instance.is_staff = True
+                instance.is_superuser = True
+                instance.save(update_fields=["is_staff","is_superuser"])
+
+        return instance
 
     def update(self, instance, validated_data):
         rol_ids = validated_data.pop("rolIds", None)
