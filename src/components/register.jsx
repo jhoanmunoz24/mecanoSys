@@ -306,8 +306,8 @@ export default function Register() {
               />
             </svg>
             <div>
-              <span className='font-medium'>¡Error!</span> {'{'}
-              errors.matchPassword{'}'}
+              <span className='font-medium'>¡Error!</span>{' '}
+              {errors.matchPassword}
             </div>
           </div>
         )}
