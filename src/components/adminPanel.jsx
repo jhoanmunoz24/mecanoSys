@@ -181,13 +181,13 @@ export default function AdminPanel({ activeTab, setActiveTab, setIsLoggedIn, use
                         </td>
                         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                           <p className='text-gray-900 whitespace-no-wrap'>
-                            {user.fechaCreacion}
+                            {new Date(user.fechaCreacion).toLocaleString()}
                           </p>
                         </td>
 
                         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                           <p className='text-gray-900 whitespace-no-wrap'>
-                            {user.ultimoAcesso}
+                            {new Date(user.ultimoAcesso).toLocaleString()}
                           </p>
                         </td>
 
