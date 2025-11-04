@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    'usuarios'
+    'usuarios.apps.UsuariosConfig'
 ]
 
 MIDDLEWARE = [
@@ -150,6 +150,7 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False,
+    
 
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,

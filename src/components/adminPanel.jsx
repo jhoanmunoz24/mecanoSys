@@ -1,4 +1,4 @@
-import React, { useEffectEvent } from 'react';
+import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import RolTable from './RolTable';
@@ -9,40 +9,50 @@ import EditUser from './editUser';
 import DeleteUser from './deleteUser';
 import App from '../App';
 
-export default function AdminPanel({ activeTab, setActiveTab, setIsLoggedIn, user }) {
+export default function AdminPanel({
+  activeTab,
+  setActiveTab,
+  setIsLoggedIn,
+  user,
+}) {
   const navigate = useNavigate();
   const [showPopUp, setShowPopUp] = useState(false);
   const [showEditPop, setShowEditPop] = useState(false);
   const [users, setUsers] = useState([]);
   const [showDeleteUser, setShowDeleteUser] = useState(false);
-  const [editingUser, setEditingUser] = useState(null)
-  const [userId,setUserId] = useState(null)
-
+  const [editingUser, setEditingUser] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   const getUsers = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/usuarios/');
-        console.log(response.data);
-        setUsers(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    try {
+      const token = localStorage.getItem('access_token');
+      const response = await axios.get('http://127.0.0.1:8000/api/usuarios/', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+      console.log(response.data);
+      setUsers(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    
     getUsers();
   }, []);
 
   const deleteUser = async (id) => {
-      try {
-        const response = await axios.delete(`http://127.0.0.1:8000/api/usuarios/${id}/`);
-        console.log(response.data);
-        setUsers(users.filter(user => user.id !== id));
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
+    try {
+      const token = localStorage.getItem('access_token');
+      const response = await axios.delete(`http://127.0.0.1:8000/api/usuarios/${id}/`, {
+      headers: { Authorization: `Bearer ${token}` }
+      
+    });
+      console.log("Usuario eliminado")  
+      console.log(response.data);
+      setUsers(users.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleLogout = async () => {
     console.log('Cerrando sesion');
@@ -119,8 +129,7 @@ export default function AdminPanel({ activeTab, setActiveTab, setIsLoggedIn, use
                 <button
                   className='mb-10 flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-400 to-cyan-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 hover:from-cyan-300 hover:to-cyan-600'
                   onClick={() => {
-                    handleShowPopUp(true) 
-                    
+                    handleShowPopUp(true);
                   }}
                 >
                   <Plus size={18} />
@@ -176,7 +185,7 @@ export default function AdminPanel({ activeTab, setActiveTab, setIsLoggedIn, use
                         </td>
                         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
                           <p className='text-gray-900 whitespace-no-wrap'>
-                            Admin
+                            {(user.roles || []).map(r => r.nombre).join(', ') || '—'}
                           </p>
                         </td>
                         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -204,7 +213,7 @@ export default function AdminPanel({ activeTab, setActiveTab, setIsLoggedIn, use
                           <button
                             className='text-gray-500 hover:bg-gray-100 p-2 rounded-full transition-colors cursor-pointer'
                             onClick={() => {
-                              handleShowEditPop(true)
+                              handleShowEditPop(true);
                               setEditingUser(user);
                             }}
                           >
@@ -215,10 +224,9 @@ export default function AdminPanel({ activeTab, setActiveTab, setIsLoggedIn, use
                           <button
                             className='text-gray-500 hover:bg-gray-100 p-2 rounded-full transition-colors cursor-pointer'
                             onClick={() => {
-                              
-                              setUserId(user.id)
-                              handleShowDeletePop(true)
-                              console.log(userId)
+                              setUserId(user.id);
+                              handleShowDeletePop(true);
+                              console.log(userId);
                             }}
                           >
                             <Trash size={16} />
@@ -236,10 +244,30 @@ export default function AdminPanel({ activeTab, setActiveTab, setIsLoggedIn, use
         </div>
       </div>
 
-      {showPopUp && <CreateUser setShowPopUp={setShowPopUp} />}
-      {showEditPop && <EditUser setShowEditPop={setShowEditPop} user={users} setUser={setUsers}/>}
-      {showDeleteUser && <DeleteUser setShowDeleteUser={setShowDeleteUser} editingUser={editingUser} setEditingUserr={setEditingUser} deleteUser={deleteUser} userId={userId}/>}
-      
+      {showPopUp && (
+        <CreateUser
+          setShowPopUp={setShowPopUp}
+          onCreated={async () => {
+            await getUsers(); // vuelve a cargar la tabla
+          }}
+        />
+      )}
+      {showEditPop && (
+        <EditUser
+          setShowEditPop={setShowEditPop}
+          user={users}
+          setUser={setUsers}
+        />
+      )}
+      {showDeleteUser && (
+        <DeleteUser
+          setShowDeleteUser={setShowDeleteUser}
+          editingUser={editingUser}
+          setEditingUser={setEditingUser}
+          deleteUser={deleteUser}
+          userId={userId}
+        />
+      )}
     </>
   );
 }

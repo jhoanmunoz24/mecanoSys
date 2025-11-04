@@ -2,7 +2,7 @@ from .models import Usuario
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from .models import Usuario, Rol, Permiso, UsuarioRol, RolPermiso
-
+from .models import Rol, UsuarioRol
 
 class RolSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,28 +30,36 @@ class CustomUserSerializer(serializers.ModelSerializer):
     roles = RolSerializer(many=True, read_only=True)
     class Meta:
         model = Usuario
-        fields = ["id","nombreCompleto","correo","estado","fechaCreacion","ultimoAcesso"]
+        fields = ["id","nombreCompleto","correo","estado","fechaCreacion","ultimoAcesso","roles"]
 
-    class UsuarioWriteSerializer(serializers.ModelSerializer):
-        rolIds = serializers.ListField(child=serializers.UUIDField(), required=False, write_only=True)
+
+class UsuarioWriteSerializer(serializers.ModelSerializer):
+    rolIds = serializers.ListField(child=serializers.UUIDField(), required=False, write_only=True)
+    password = serializers.CharField(write_only=True, required=False)
     class Meta:
         model = Usuario
-        fields = ["nombreCompleto","correo","estado","rolIds"]
+        fields = ["nombreCompleto","correo","estado","rolIds","password"]
 
     def create(self, validated_data):
         rol_ids = validated_data.pop("rolIds", [])
-        user = Usuario.objects.create(**validated_data)
+        password = validated_data.pop("password", None)
+        user = Usuario.objects.create_user(
+            username=validated_data.get("correo"),
+            password=password or Usuario.objects.make_random_password(),
+            **validated_data
+        )
         if rol_ids:
-            from .models import Rol
             roles = Rol.objects.filter(id__in=rol_ids)
             user.roles.set(roles)
+        else:
+            admin, _ = Rol.objects.get_or_create(nombre="Admin", defaults={"descripcion":"Admin por defecto"})
+            user.roles.add(admin)
         return user
 
     def update(self, instance, validated_data):
         rol_ids = validated_data.pop("rolIds", None)
         user = super().update(instance, validated_data)
         if rol_ids is not None:
-            from .models import Rol
             roles = Rol.objects.filter(id__in=rol_ids)
             user.roles.set(roles)
         return user
@@ -59,7 +67,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class CustomUserRegistrationSerializer(serializers.ModelSerializer):
     password1= serializers.CharField(write_only=True)
     password2= serializers.CharField(write_only=True)
-    
+    rol = serializers.PrimaryKeyRelatedField(
+        queryset=Rol.objects.all(), required=False, write_only=True
+    )
     class Meta:
 
 
@@ -77,6 +87,7 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
     
 
     def create(self,validated_data):
+        
         rol_id = validated_data.pop("rol", None)
         correo =validated_data.get('correo')
         password = validated_data.pop("password1")
@@ -85,7 +96,7 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
 
         user = Usuario.objects.create_user(username=correo, password=password, **validated_data)
     
-        from .models import Rol, UsuarioRol
+        
         if rol_id:
             rol = Rol.objects.get(id=rol_id)
         else:

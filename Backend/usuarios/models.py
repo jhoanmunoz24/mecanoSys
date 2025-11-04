@@ -50,7 +50,7 @@ class UsuarioRol(models.Model):
         indexes = [models.Index(fields=['usuario', 'rol'])]
         
 class RolPermiso(models.Model):
-    rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE, related_name='permisos_asignados')
     permiso = models.ForeignKey(Permiso, on_delete=models.CASCADE)
     fecha_asignacion = models.DateTimeField(auto_now_add=True)
 
