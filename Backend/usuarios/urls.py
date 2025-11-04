@@ -10,6 +10,9 @@ from .views import *
 
 router = routers.DefaultRouter()
 router.register(r'usuarios', views.UserView, 'usuarios')
+router.register(r'roles', RolViewSet, basename='roles')
+router.register(r'permisos', PermisoViewSet, basename='permisos')
+
 urlpatterns = [
     path("register/", UserRegistrationAPI.as_view(), name= "register-user"),
     path("login/", UserLoginAPIView.as_view(), name= "login-user"),

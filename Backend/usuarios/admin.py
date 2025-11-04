@@ -16,10 +16,6 @@ class CustomAdminUser(UserAdmin):
     list_display = ('correo', 'username', 'nombreCompleto', 'estado', 'is_staff', 'fechaCreacion', 'ultimoAcesso')
     list_filter = ('estado', 'is_staff', 'is_superuser')
 
-    # 👇 Campos que se muestran al editar un usuario
-    
-
-    # 👇 Campos al crear un nuevo usuario desde admin
     add_fieldsets = (
         (None, {
             'classes': ('wide',),

@@ -13,6 +13,50 @@ from django.utils import timezone
 from rest_framework import viewsets
 from .models import Usuario
 
+from .models import Usuario, Rol, Permiso, UsuarioRol, RolPermiso
+from .serializers import CustomUserSerializer, RolSerializer, PermisoSerializer
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+class UserView(viewsets.ModelViewSet):
+    queryset = Usuario.objects.all()
+    serializer_class = CustomUserSerializer
+
+    @action(detail=True, methods=['post'])
+    def asignar_rol(self, request, pk=None):
+        usuario = self.get_object()
+        rol_id = request.data.get('rol')
+        asignado_por = request.data.get('asignado_por')
+        UsuarioRol.objects.get_or_create(usuario=usuario, rol_id=rol_id, defaults={'asignado_por': asignado_por})
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True, methods=['delete'])
+    def retirar_rol(self, request, pk=None):
+        usuario = self.get_object()
+        rol_id = request.data.get('rol')
+        UsuarioRol.objects.filter(usuario=usuario, rol_id=rol_id).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class RolViewSet(viewsets.ModelViewSet):
+    queryset = Rol.objects.all()
+    serializer_class = RolSerializer
+
+    @action(detail=True, methods=['post'])
+    def asignar_permiso(self, request, pk=None):
+        permiso_id = request.data.get('permiso')
+        RolPermiso.objects.get_or_create(rol_id=pk, permiso_id=permiso_id)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=True, methods=['delete'])
+    def retirar_permiso(self, request, pk=None):
+        permiso_id = request.data.get('permiso')
+        RolPermiso.objects.filter(rol_id=pk, permiso_id=permiso_id).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class PermisoViewSet(viewsets.ModelViewSet):
+    queryset = Permiso.objects.all()
+    serializer_class = PermisoSerializer
 
 class UserView(viewsets.ModelViewSet):
     serializer_class = CustomUserSerializer

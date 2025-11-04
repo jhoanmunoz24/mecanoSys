@@ -119,8 +119,8 @@ export default function AdminPanel({ activeTab, setActiveTab, setIsLoggedIn, use
                 <button
                   className='mb-10 flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-400 to-cyan-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 hover:from-cyan-300 hover:to-cyan-600'
                   onClick={() => {
-                    handleShowPopUp 
-                    setEditingUser(user)
+                    handleShowPopUp(true) 
+                    
                   }}
                 >
                   <Plus size={18} />

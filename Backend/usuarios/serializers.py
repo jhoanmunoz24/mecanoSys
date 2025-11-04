@@ -1,8 +1,33 @@
 from .models import Usuario
 from django.contrib.auth import authenticate
 from rest_framework import serializers
+from .models import Usuario, Rol, Permiso, UsuarioRol, RolPermiso
+
+
+class RolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rol
+        fields = ['id', 'nombre', 'descripcion', 'fecha_creacion']
+
+class PermisoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permiso
+        fields = ['id', 'clave', 'descripcion']
+
+class UsuarioRolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UsuarioRol
+        fields = ['usuario', 'rol', 'fecha_asignacion', 'asignado_por']
+        read_only_fields = ['fecha_asignacion']
+
+class RolPermisoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RolPermiso
+        fields = ['rol', 'permiso', 'fecha_asignacion']
+        read_only_fields = ['fecha_asignacion']
 
 class CustomUserSerializer(serializers.ModelSerializer):
+    roles = RolSerializer(many=True, read_only=True)
     class Meta:
         model = Usuario
         fields = ["id","nombreCompleto","correo","estado","fechaCreacion","ultimoAcesso"]
