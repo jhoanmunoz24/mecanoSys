@@ -5,7 +5,7 @@ from rest_framework import serializers
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ["id","correo"]
+        fields = ["id","nombreCompleto","correo","estado","fechaCreacion","ultimoAcesso"]
 
 class CustomUserRegistrationSerializer(serializers.ModelSerializer):
     password1= serializers.CharField(write_only=True)
@@ -14,7 +14,7 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
 
 
         model = Usuario
-        fields = ["id","correo","password1","password2"]
+        fields = ["id","nombreCompleto","correo","password1","password2"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def validate(self, attrs):

@@ -9,6 +9,20 @@ from .serializers import *
 from rest_framework import status
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
+from django.utils import timezone
+from rest_framework import viewsets
+from .models import Usuario
+
+
+class UserView(viewsets.ModelViewSet):
+    serializer_class = CustomUserSerializer
+    queryset = Usuario.objects.all()
+
+
+
+
+
+
 
 class UserRegistrationAPI(GenericAPIView):
     permission_classes = (AllowAny,)
@@ -37,6 +51,10 @@ class UserLoginAPIView(GenericAPIView):
         serializer = CustomUserSerializer(user)
         token = RefreshToken.for_user(user)
         data = serializer.data
+
+
+        user.ultimoAcesso = timezone.now()
+        user.save(update_fields=['ultimoAcesso'])
 
         data["tokens"] = {"refresh": str(token),"access": str(token.access_token)}
         return Response(data, status = status.HTTP_200_OK)
