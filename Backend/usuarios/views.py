@@ -75,7 +75,7 @@ class UserView(viewsets.ModelViewSet):
         asignado_por = request.data.get('asignado_por')
         UsuarioRol.objects.get_or_create(usuario=usuario, rol_id=rol_id, defaults={'asignado_por': asignado_por})
 
-        # Si el rol es Admin, marcar banderas nativas (opcional)
+       
         rol = Rol.objects.get(id=rol_id)
         if rol.nombre.lower() in ('admin','administrador'):
             usuario.is_staff = True
@@ -96,7 +96,7 @@ class UserView(viewsets.ModelViewSet):
         rol_id = request.data.get('rol')
         UsuarioRol.objects.filter(usuario=usuario, rol_id=rol_id).delete()
 
-        # Si quitaste Admin y no quedan roles Admin, limpia banderas
+        
         if not usuario.roles.filter(nombre__iexact='admin').exists():
             if usuario.is_superuser or usuario.is_staff:
                 usuario.is_superuser = False
@@ -117,7 +117,7 @@ class UserRegistrationAPI(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        # 💡 Crear (si no existen) el rol y el permiso
+        # Crear (si no existen) el rol y el permiso
         rol_admin, _ = Rol.objects.get_or_create(
             nombre="Admin",
             defaults={"descripcion": "Rol con acceso total al sistema"}

@@ -77,13 +77,7 @@ class UsuarioWriteSerializer(serializers.ModelSerializer):
 
         return instance
 
-    def update(self, instance, validated_data):
-        rol_ids = validated_data.pop("rolIds", None)
-        user = super().update(instance, validated_data)
-        if rol_ids is not None:
-            roles = Rol.objects.filter(id__in=rol_ids)
-            user.roles.set(roles)
-        return user
+    
 
 class CustomUserRegistrationSerializer(serializers.ModelSerializer):
     password1= serializers.CharField(write_only=True)
