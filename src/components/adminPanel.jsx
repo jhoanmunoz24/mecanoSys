@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import RolTable from './RolTable';
@@ -8,6 +8,8 @@ import axios from 'axios';
 import EditUser from './editUser';
 import DeleteUser from './deleteUser';
 import App from '../App';
+import RepuestoTable from './repuestoTable';
+import CreatePart from './createPart';
 
 export default function AdminPanel({
   activeTab,
@@ -22,7 +24,7 @@ export default function AdminPanel({
   const [showDeleteUser, setShowDeleteUser] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [userId, setUserId] = useState(null);
-
+  const [showPart, setShowPart] = useState(false)
 
   async function updateUser(id, payload) {
   const token = localStorage.getItem("access_token");
@@ -93,6 +95,7 @@ export default function AdminPanel({
   const handleShowPopUp = () => {
     setShowPopUp(true);
   };
+  
   const handleShowEditPop = () => {
     setShowEditPop(true);
   };
@@ -117,6 +120,12 @@ export default function AdminPanel({
             >
               Roles
             </button>
+            <button
+              className='text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r'
+              onClick={() => setActiveTab('Repuestos')}
+            >
+              Repuestos
+            </button>
           </div>
           <div>
             <button
@@ -127,7 +136,7 @@ export default function AdminPanel({
             </button>
           </div>
 
-          {activeTab === 'Usuarios' ? (
+          {activeTab === 'Usuarios' &&(
             <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
               <div>
                 <h2 className='text-2xl font-semibold leading-tight mb-10'>
@@ -248,12 +257,21 @@ export default function AdminPanel({
                 </table>
               </div>
             </div>
-          ) : (
-            <RolTable />
           )}
         </div>
       </div>
 
+
+      {activeTab === 'Roles' && <RolTable/> }
+      {activeTab === 'Repuestos' && <RepuestoTable
+        setShowPart = {setShowPart}
+      /> }
+
+      {showPart && (
+        <CreatePart
+          setShowPart = {setShowPart}     
+        />  
+      )}
       {showPopUp && (
         <CreateUser
           setShowPopUp={setShowPopUp}
