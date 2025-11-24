@@ -67,6 +67,12 @@ export default function Register() {
       return;
     }
 
+    const dataToSend = {
+    ...formData,
+    nombreCompleto: formData.nombreCompleto.toUpperCase(),
+    correo: formData.correo.toLowerCase(),
+  };
+
     setIsRegister(false);
     setEmailUsed(false);
     setIsLoading(true);
@@ -74,7 +80,7 @@ export default function Register() {
     try {
       const response = await axios.post(
         'http://127.0.0.1:8000/api/register/',
-        formData
+        dataToSend
       );
 
       setIsRegister(true);

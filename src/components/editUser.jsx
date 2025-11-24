@@ -10,16 +10,21 @@ export default function EditUser({
   setEditingUser,
   updateUser,
   userId,
+  getUsers
 }) {
 
   const [roles, setRoles] = useState([]);
+  
 
   const [formData, setFormData] = useState({
     nombreCompleto: editingUser?.nombreCompleto ?? '',
     correo: editingUser?.correo ?? '',
-    rolId: editingUser?.roles?.[0]?.id ?? '', // ajusta según tu modelo
+    rolId: editingUser?.roles?.[0]?.id ?? '',
     password: '',
+    fechaCreacion: editingUser?.fechaCreacion
   });
+
+  console.log(formData)
   async function handleEditUser() {
     if (!userId) return; // evita PATCH /null/
     const payload = {
@@ -30,6 +35,7 @@ export default function EditUser({
     };
     await updateUser(userId, payload);
     setShowEditPop(false);
+    getUsers()
   }
 
   useEffect(() => {
@@ -80,7 +86,7 @@ export default function EditUser({
                     className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
                     placeholder='Pepito Perez'
                     name='nombreCompleto'
-                    value={formData.nombreCompleto}
+                    value={formData.nombreCompleto.toUpperCase()}
                     onChange={onChange}
                   />
                 </div>
@@ -92,7 +98,7 @@ export default function EditUser({
                     placeholder='ejemplo@correo.com'
                     onChange={onChange}
                     name='correo'
-                    value={formData.correo}
+                    value={formData.correo.toLowerCase()}
                   />
                 </div>
 
@@ -134,7 +140,7 @@ export default function EditUser({
                       <input
                         type='text'
                         className='pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
-                        placeholder='11/01/2025'
+                        placeholder= {new Date(formData.fechaCreacion).toLocaleDateString()}
                         disabled
                       />
                       <div className='absolute left-3 top-2'>

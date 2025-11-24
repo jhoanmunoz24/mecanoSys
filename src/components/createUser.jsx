@@ -102,7 +102,7 @@ export default function CreateUser({ setShowPopUp, onCreated }) {
                     type='text'
                     className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
                     placeholder='Pepito Perez'
-                    onChange={(e) => setNombreCompleto(e.target.value)}
+                    onChange={(e) => setNombreCompleto(e.target.value.toUpperCase())}
                   />
                 </div>
                 <div className='flex flex-col'>
@@ -111,7 +111,7 @@ export default function CreateUser({ setShowPopUp, onCreated }) {
                     type='text'
                     className='px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
                     placeholder='ejemplo@correo.com'
-                    onChange={(e) => setCorreo(e.target.value)}
+                    onChange={(e) => setCorreo(e.target.value.toLowerCase())}
                   />
                 </div>
 
@@ -161,7 +161,7 @@ export default function CreateUser({ setShowPopUp, onCreated }) {
                       <input
                         type='text'
                         className='pr-4 pl-10 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600'
-                        placeholder='11/01/2025'
+                        placeholder={new Date().toLocaleDateString()}
                         disabled
                       />
                       <div className='absolute left-3 top-2'>

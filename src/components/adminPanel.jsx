@@ -283,10 +283,10 @@ export default function AdminPanel({
       {showEditPop && (
         <EditUser
           setShowEditPop={setShowEditPop}
-          user={users}
-          setUser={setUsers}
+          editingUser={editingUser}
           userId={userId}
           updateUser={updateUser}
+          getUsers={getUsers}
 
         />
       )}

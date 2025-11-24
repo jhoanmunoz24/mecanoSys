@@ -18,9 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from login import views
 from rest_framework import routers
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     
     path('api/', include('usuarios.urls')),
+
+
+    
     
 ]
