@@ -2,6 +2,23 @@ import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 export default function CreatePart({ setShowPart }) {
   const [category, setCategory] = useState('');
+  const [showCategory, setShowCategory] = useState(false);
+  const [estado, setEstado] = useState('');
+  const [showEstado, setShowEstado] = useState(false);
+
+
+  const [formData, setFormData] = [
+    
+  ]
+  const selectCategory = (value) => {
+    setCategory(value);
+    setShowCategory(false);
+  };
+
+  const selectEstado = (value) => {
+    setEstado(value);
+    setShowEstado(false);
+  };
 
   return (
     <>
@@ -17,8 +34,10 @@ export default function CreatePart({ setShowPart }) {
               role='alert'
               className='container mx-auto w-11/12 md:w-2/3 max-w-lg'
             >
-              <div className='relative bg-white rounded-3xl shadow-lg w-full max-w-3xl mx-4 p-6 
-                  max-h-[85vh] overflow-y-auto'>
+              <div
+                className='relative bg-white rounded-3xl shadow-lg w-full max-w-3xl mx-4 p-6 
+                  max-h-[85vh] overflow-y-auto'
+              >
                 <div className='w-full flex justify-start text-gray-600 mb-3'></div>
                 <h1 className='text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4'>
                   Crear un nuevo repuesto
@@ -50,15 +69,109 @@ export default function CreatePart({ setShowPart }) {
 
                 <div className='relative mb-5 mt-2'>
                   <button
+                    onClick={() => setShowCategory(!showCategory)}
+                    
+                    type='button'
+                    className='text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal  flex items-center p-2.5  border-gray-300 rounded border  flex items-center justify-between px-4 hover:bg-gray-300'
+                  >
+                  {category ? category: "Categoria"}
+                    
+                    <ChevronDown size={18} />
+                  </button>
+                  {showCategory && (
+                    <div className='cursor-pointer text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal p-5 flex items-center flex-col border-gray-300  bg-gray-100 top-12 absolute justify-center shadow-md gap-6 z-10'>
+                      <div
+                        className='hover:bg-gray-200 w-full'
+                        onClick={() => selectCategory('Mecanico')}
+                      >
+                        <span className='font-bold text-[15px]'>Mecanico</span>
+                        <p>Componentes que transmiten fuerza y movimiento.</p>
+                      </div>
+                      <div
+                        className='hover:bg-gray-200 w-full'
+                        onClick={() => selectCategory('Eléctricos')}
+                      >
+                        <span className='font-bold text-[15px]'>
+                          Eléctricos
+                        </span>
+                        <p>
+                          Elementos que gestionan la energía y las señales
+                          eléctricas.
+                        </p>
+                      </div>
+                      <div
+                        className='hover:bg-gray-200 w-full'
+                        onClick={() => selectCategory('Sistema de corte')}
+                      >
+                        <span className='font-bold text-[15px]'>
+                          Sistema de corte
+                        </span>
+                        <p>
+                          Elementos que realizan el trabajo de cortar (ej.
+                          cuchillas, cabezal de nylon, hilo, protector).
+                        </p>
+                      </div>
+
+                      <div
+                        className='hover:bg-gray-200 w-full'
+                        onClick={() =>
+                          selectCategory('Sistema de combustible y filtración')
+                        }
+                      >
+                        <span className='font-bold text-[15px]'>
+                          Sistema de combustible y filtración
+                        </span>
+                        <p>
+                          Piezas que gestionan la mezcla de aire y combustible
+                          (ej. filtro de aire, filtro de combustible, mangueras,
+                          tanque).
+                        </p>
+                      </div>
+                      <div
+                        className='hover:bg-gray-200 w-full'
+                        onClick={() => selectCategory('Estructura y agarre')}
+                      >
+                        <span className='font-bold text-[15px]'>
+                          Estructura y agarre
+                        </span>
+                        <p>
+                          Partes que dan soporte y permiten el manejo seguro
+                          (ej. caña o tubo, manillar, arnés)
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className='relative mb-5 mt-2'>
+                  <button
+                    onClick={() => setShowEstado(!showEstado)}
                     type='button'
                     className='text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-40 h-10 flex items-center   border-gray-300 rounded border  flex items-center justify-between px-4 hover:bg-gray-300'
                   >
-                    Categoria
+                    {estado ? estado: "Estado"}
                     <ChevronDown size={18} />
                   </button>
-                  <div className='text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-40 h-10 flex items-center border-gray-300 '>
-                    asdasd
-                  </div>
+
+                  {showEstado && (
+                    <div className='cursor-pointer text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal p-5 flex items-center flex-col border-gray-300  bg-gray-100 top-12 absolute justify-center shadow-md gap-6'>
+                      <div
+                        className='hover:bg-gray-200 w-full'
+                        onClick={() => selectEstado('Disponible')}
+                      >
+                        <span className='font-bold text-[15px]'>
+                          DISPONIBLE
+                        </span>
+                      </div>
+
+                      <div
+                        className='hover:bg-gray-200 w-full'
+                        onClick={() => selectEstado('Sin Stock')}
+                      >
+                        <span className='font-bold text-[15px]'>SIN STOCK</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <label
@@ -117,21 +230,6 @@ export default function CreatePart({ setShowPart }) {
                   placeholder='Bujia'
                 />
 
-                <div className='relative mb-5 mt-2'>
-                  <button
-                    type='button'
-                    className='text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-40 h-10 flex items-center   border-gray-300 rounded border  flex items-center justify-between px-4 hover:bg-gray-300'
-                  >
-                    Estado
-                    <ChevronDown size={18} />
-                  </button>
-                  <div className='text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-40 h-10 flex items-center border-gray-300 '>
-                    asdasd
-                  </div>
-                </div>
-
-                
-                
                 <div className='flex items-center justify-start w-full'>
                   <button className='focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm'>
                     Guardar Repuesto
