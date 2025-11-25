@@ -17,7 +17,8 @@ export default function CreatePart({ setShowPart }) {
               role='alert'
               className='container mx-auto w-11/12 md:w-2/3 max-w-lg'
             >
-              <div className='relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400'>
+              <div className='relative bg-white rounded-3xl shadow-lg w-full max-w-3xl mx-4 p-6 
+                  max-h-[85vh] overflow-y-auto'>
                 <div className='w-full flex justify-start text-gray-600 mb-3'></div>
                 <h1 className='text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4'>
                   Crear un nuevo repuesto
@@ -61,58 +62,85 @@ export default function CreatePart({ setShowPart }) {
                 </div>
 
                 <label
-                  htmlFor='cvc'
+                  htmlFor='name'
                   className='text-gray-800 text-sm font-bold leading-tight tracking-normal'
                 >
-                  CVC
+                  Marca
                 </label>
+                <input
+                  id='name'
+                  className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
+                  placeholder='Bujia'
+                />
+                <label
+                  htmlFor='name'
+                  className='text-gray-800 text-sm font-bold leading-tight tracking-normal'
+                >
+                  Modelo
+                </label>
+                <input
+                  id='name'
+                  className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
+                  placeholder='Bujia'
+                />
+                <label
+                  htmlFor='name'
+                  className='text-gray-800 text-sm font-bold leading-tight tracking-normal'
+                >
+                  Stock
+                </label>
+                <input
+                  id='name'
+                  className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
+                  placeholder='Bujia'
+                />
+                <label
+                  htmlFor='name'
+                  className='text-gray-800 text-sm font-bold leading-tight tracking-normal'
+                >
+                  Precio Unitario
+                </label>
+                <input
+                  id='name'
+                  className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
+                  placeholder='Bujia'
+                />
+                <label
+                  htmlFor='name'
+                  className='text-gray-800 text-sm font-bold leading-tight tracking-normal'
+                >
+                  Precio Venta
+                </label>
+                <input
+                  id='name'
+                  className='mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
+                  placeholder='Bujia'
+                />
+
                 <div className='relative mb-5 mt-2'>
-                  <div className='absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      className='icon icon-tabler icon-tabler-info-circle'
-                      width={20}
-                      height={20}
-                      viewBox='0 0 24 24'
-                      strokeWidth='1.5'
-                      stroke='currentColor'
-                      fill='none'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    >
-                      <path
-                        stroke='none'
-                        d='M0 0h24v24H0z'
-                      />
-                      <circle
-                        cx={12}
-                        cy={12}
-                        r={9}
-                      />
-                      <line
-                        x1={12}
-                        y1={8}
-                        x2='12.01'
-                        y2={8}
-                      />
-                      <polyline points='11 12 12 12 12 16 13 16' />
-                    </svg>
+                  <button
+                    type='button'
+                    className='text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-40 h-10 flex items-center   border-gray-300 rounded border  flex items-center justify-between px-4 hover:bg-gray-300'
+                  >
+                    Estado
+                    <ChevronDown size={18} />
+                  </button>
+                  <div className='text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-40 h-10 flex items-center border-gray-300 '>
+                    asdasd
                   </div>
-                  <input
-                    id='cvc'
-                    className='mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border'
-                    placeholder='MM/YY'
-                  />
                 </div>
+
+                
+                
                 <div className='flex items-center justify-start w-full'>
                   <button className='focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 bg-indigo-700 rounded text-white px-8 py-2 text-sm'>
-                    Submit
+                    Guardar Repuesto
                   </button>
                   <button
                     className='focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-gray-400 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm'
                     onClick={() => setShowPart(false)}
                   >
-                    Cancel
+                    Cancelar
                   </button>
                 </div>
                 <button
